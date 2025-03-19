@@ -32,7 +32,7 @@ namespace HotellMenu.Menus
                 Console.WriteLine("2. Redigera kund");
                 Console.WriteLine("3. Visa kund(er)");
                 Console.WriteLine("4. Radera kund");
-                Console.WriteLine("5. Exit");
+                Console.WriteLine("5. Återgå till huvudmeny");
                 ConsoleKeyInfo key = Console.ReadKey();
 
                 var customerController = new CustomerController(new CustomerService(_dbContext));

@@ -36,6 +36,7 @@ namespace HotellMenu.Controllers
             Console.WriteLine("Ange kundens id:");
             int customerId = int.Parse(Console.ReadLine());
             var customer = _customerService.ShowCustomerById(customerId);
+
             if (customer != null)
             {
                 _customerService.ShowCustomerById(customerId);

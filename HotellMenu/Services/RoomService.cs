@@ -39,7 +39,7 @@ namespace HotellMenu.Services
                 _dbContext.SaveChanges();
             }
         }
-
+        
         public List<HotelRooms> ShowAllHotelRoom()
         {
             return _dbContext.HotelRooms.ToList();

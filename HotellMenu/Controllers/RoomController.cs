@@ -20,7 +20,7 @@ namespace HotellMenu.Controllers
         }
 
 
-        public void RegisterNewRoom()
+        public void AddNewRoom()
         {
             var avaliableRoomNumbers = _roomService.ShowAllHotelRoom();
 
@@ -49,26 +49,50 @@ namespace HotellMenu.Controllers
         }
 
 
-
-        /*
-
-        public void UpdateRoom()
+        public void EditRoom()
         {
-            var room = _dbContext.HotelRooms.FirstOrDefault(c => c.HotelRoomsId == hotelRoomsId);
-            if (room != null)
+            var avaliableRoomNumbers = _roomService.ShowAllHotelRoom();
+
+            Console.WriteLine("Ange rumsnummer på rummet du vill redigera: ");
+            int roomNumber = int.Parse(Console.ReadLine());
+            var room = _roomService.ShowHotelRoomById(roomNumber);
+            if (room == null)
             {
-                room.IsDouble = newRoomType;
-                room.RoomNumber = newRoomNumber;
-                room.RoomAvaliability = newRoomAvaliability;
-                room.NbrExtraBeds = newNbrExtraBeds;
-                _dbContext.SaveChanges();
-                Console.WriteLine("Rummets egenskaper har uppdaterats.");
+                Console.WriteLine("Rummet finns inte!");
+                return;
             }
-            else
+            Console.WriteLine("Ange nytt rumsnummer: ");
+            room.RoomNumber = int.Parse(Console.ReadLine());
+            Console.WriteLine("Ange om rummet är dubbelrum (true/false): ");
+            room.IsDouble = bool.Parse(Console.ReadLine());
+            Console.WriteLine("Ange om rummet är ledigt (true/false): ");
+            room.RoomAvaliability = bool.Parse(Console.ReadLine());
+            Console.WriteLine("Ange om storlek på rummet: (20/30/40) kvm ");
+            room.RoomSize = int.Parse(Console.ReadLine());
+            Console.WriteLine("Ange antal extra sängar: (0/1/2) ");
+            room.NbrExtraBeds = int.Parse(Console.ReadLine());
+            _roomService.UpdateHotelRoom(room);
+            Console.WriteLine("Rummet har uppdaterats!");
+        }
+
+        public void ShowAllRooms()
+        {
+            var rooms = _roomService.ShowAllHotelRoom();
+            foreach (var room in rooms)
             {
-                Console.WriteLine("Rum inte hittat.");
+                Console.WriteLine($"Rumsnummer: {room.RoomNumber}, Dubbelrum: {room.IsDouble}, Ledigt: {room.RoomAvaliability}, Storlek: {room.RoomSize}, Antal extra sängar: {room.NbrExtraBeds}");
+                
             }
-        }*/
+            Console.ReadLine();
+        }
+
+        public void DeleteRoom()
+        {
+            Console.WriteLine("Ange rumsnummer på rummet du vill radera: ");
+            int roomNumber = int.Parse(Console.ReadLine());
+            _roomService.DeleteHotelRoom(roomNumber);
+            Console.WriteLine("Rummet har raderats!");
+        }
 
 
     }

@@ -31,28 +31,28 @@ namespace HotellMenu.Menus
                 Console.WriteLine("2. Redigera rum");
                 Console.WriteLine("3. Visa (alla) rum");
                 Console.WriteLine("4. Radera rum");
-                Console.WriteLine("5. Exit");
+                Console.WriteLine("5. Återgå till huvudmeny");
                 ConsoleKeyInfo key = Console.ReadKey();
 
 
-                var RoomController = new RoomController(new RoomService(_dbContext));
+                var roomController = new RoomController(new RoomService(_dbContext));
 
                 switch (key.KeyChar)
                 {
                     case '1':
-                        //
+                        roomController.AddNewRoom();
                         break;
                     case '2':
-                        //
+                        roomController.EditRoom();
                         break;
                     case '3':
-                        //
+                        roomController.ShowAllRooms();
                         break;
                     case '4':
-                        //
+                        roomController.DeleteRoom();
                         break;
                     case '5':
-                        //
+                        isRunning = false;
                         break;
                     default:
                         Console.WriteLine("Välj bland menyvalen 1-5");
