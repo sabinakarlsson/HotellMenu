@@ -18,9 +18,6 @@ namespace HotellMenu.Menus
             _dbContext = dbContext;
         }
 
-
-
-
         public void Start()
         {
             Console.WriteLine("Välkommen till kundmenyn!");
@@ -47,6 +44,8 @@ namespace HotellMenu.Menus
                         break;
                     case '3':
                         customerController.ShowAllCustomers();
+                        Console.WriteLine("Klicka enter för att gå vidare");
+                        Console.ReadKey();
                         break;
                     case '4':
                         customerController.DeleteCustomer();

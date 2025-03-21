@@ -47,6 +47,8 @@ namespace HotellMenu.Menus
                         break;
                     case '3':
                         roomController.ShowAllRooms();
+                        Console.WriteLine("Klicka enter för att gå vidare");
+                        Console.ReadKey();
                         break;
                     case '4':
                         roomController.DeleteRoom();

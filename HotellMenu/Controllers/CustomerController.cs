@@ -1,4 +1,5 @@
-﻿using HotellMenu.Services;
+﻿using HotellMenu.Entities;
+using HotellMenu.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -35,29 +36,39 @@ namespace HotellMenu.Controllers
         public void EditCustomer()
         {
             Console.Clear();
-            Console.WriteLine("Ange kundens id:");
-            int customerId = int.Parse(Console.ReadLine());
-            var customer = _customerService.ShowCustomerById(customerId);
+            int customerId;
+            Customers customer = null;
 
-            if (customer != null)
+            ShowAllCustomers(); 
+            while (true)
             {
-                _customerService.ShowCustomerById(customerId);
+                Console.WriteLine("Ange Id på kunden du vill redigera:");
+                if (int.TryParse(Console.ReadLine(), out customerId))
+                {
+                    customer = _customerService.ShowCustomerById(customerId);
+                    if (customer != null)
+                    {
+                        Console.WriteLine("Du redigerar nu kund med kundId: " + customer.CustomersId);
 
-                Console.WriteLine("Ange kundens nya namn:");
-                customer.CustomerName = Console.ReadLine();
-                Console.WriteLine("Ange kundens nya email:");
-                customer.Email = Console.ReadLine();
-                _customerService.EditCustomer(customer);
+                        Console.WriteLine("Ange kundens nya namn:");
+                        customer.CustomerName = Console.ReadLine();
+                        Console.WriteLine("Ange kundens nya email:");
+                        customer.Email = Console.ReadLine();
+
+                        _customerService.EditCustomer(customer);
+                        Console.WriteLine("Kundens information är uppdaterad.");
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Kunden finns inte. Försök igen.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Ange ett giltigt id");
+                }
             }
-
-            else
-            {
-                Console.WriteLine("Kunden finns inte");
-            }
-
-            Console.WriteLine("\n========================\n");
-            ShowAllCustomers();
-
         }
 
 

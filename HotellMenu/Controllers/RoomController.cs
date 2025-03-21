@@ -143,7 +143,9 @@ namespace HotellMenu.Controllers
             };
             _roomService.AddHotelRoom(room);
 
+
             Console.WriteLine("Rummet har registrerats!");
+            Console.ReadLine();
         }
 
 
@@ -289,6 +291,7 @@ namespace HotellMenu.Controllers
 
             _roomService.UpdateHotelRoom(room);
             Console.WriteLine("Rummet har uppdaterats!");
+            Console.ReadKey();
         }
 
         public void ShowAllRooms()
@@ -305,7 +308,6 @@ namespace HotellMenu.Controllers
         {
             Console.Clear();
             ShowAllRooms();
-
             Console.WriteLine("Ange rumsId på rummet du vill radera: ");
             int roomId = int.Parse(Console.ReadLine());
             _roomService.DeleteHotelRoom(roomId);
