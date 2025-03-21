@@ -56,5 +56,7 @@ namespace HotellMenu.Services
             return _dbContext.HotelRooms.Any(r => r.RoomNumber == roomNumber);
         }
 
+
+
     }
 }

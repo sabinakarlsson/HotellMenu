@@ -19,95 +19,118 @@ namespace HotellMenu.Controllers
             _roomService = roomService;
         }
 
-
         public void AddNewRoom()
         {
             Console.Clear();
             ShowAllRooms();
-            Console.WriteLine("Ange rummets rumsnummer: ");
-            if (_roomService.IsRoomNumberTaken(int.Parse(Console.ReadLine())))
+            
+            int roomNumber;
+            while (true)
             {
-                Console.WriteLine("Rumsnumret är upptaget");
-                return;
-            }
-            if (!int.TryParse(Console.ReadLine(), out int roomNumber))
-            {
-                Console.WriteLine("Inte ett giltigt rumsnummer");
-                return;
-            }
-
-            Console.WriteLine("Ange om rummet är dubbelrum (true/false): ");
-
-            if (!bool.TryParse(Console.ReadLine(), out bool isDouble))
-            {
-                Console.WriteLine("Inte en giltig inmatning, ange true eller false");
-                return;
-            }
-
-            Console.WriteLine("Ange om rummet är ledigt (true/false): ");
-            if (!bool.TryParse(Console.ReadLine(), out bool isAvaliable))
-            {
-                Console.WriteLine("Inte en giltig inmatning, ange true eller false");
-                return;
-            }
-
-            Console.WriteLine("Ange om storlek på rummet: (20/30/40) kvm ");
-            if (!int.TryParse(Console.ReadLine(), out int roomSize) || (roomSize != 20 && roomSize != 30 && roomSize != 40))
-            {
-                Console.WriteLine("Inte giltig storlek. Vänligen ange 20, 30 eller 40 kvm.");
-                return;
-            }
-
-            if (isDouble)
-            {
-                if (roomSize == 30 || roomSize == 40)
+                Console.WriteLine("Ange rummets rumsnummer: ");
+                if (int.TryParse(Console.ReadLine(), out roomNumber) && !_roomService.IsRoomNumberTaken(roomNumber))
                 {
-                    
+                    break;
                 }
                 else
                 {
-                    Console.WriteLine("Ett dubbelrum kan endast vara 30 eller 40 kvm");
-                    return;
+                    Console.WriteLine("Inte ett giltigt rumsnummer eller så är rumsnumret redan upptaget. Försök igen");
                 }
             }
-            else
+
+            bool isDouble;
+            while (true)
             {
-                if (roomSize != 20)
+                Console.WriteLine("Ange om rummet är dubbelrum (true/false): ");
+                if (bool.TryParse(Console.ReadLine(), out isDouble))
                 {
-                    Console.WriteLine("Ett singelrum kan endast vara 20 kvm.");
-                    return;
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Inte en giltig inmatning, ange true eller false");
+                }
+            }
+
+            bool isAvaliable;
+            while (true)
+            {
+                Console.WriteLine("Ange om rummet är ledigt (true/false): ");
+                if (bool.TryParse(Console.ReadLine(), out isAvaliable))
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Inte en giltig inmatning, ange true eller false");
+                }
+
+            }
+
+            int roomSize;
+            int[] validRoomSizes = { 20, 30, 40 };
+            while (true)
+            {
+                Console.WriteLine("Ange om storlek på rummet: (20/30/40) kvm ");
+                if (int.TryParse(Console.ReadLine(), out roomSize) || validRoomSizes.Contains(roomSize))
+                {
+                    var validRoomSize = isDouble ? new int[] { 30, 40 }.Contains(roomSize) : roomSize == 20;
+
+                    if (!validRoomSize)
+                    {
+                        if (isDouble)
+                        {
+                            Console.WriteLine("Ett dubbelrum kan endast vara 30 eller 40 kvm");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Ett singelrum kan endast vara 20 kvm.");
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+
+                }
+                else
+                {
+                    Console.WriteLine("Inte giltig storlek. Vänligen ange 20, 30 eller 40 kvm.");
                 }
             }
 
 
-            Console.WriteLine("Ange antal extra sängar: (0/1/2) ");
-            if (!int.TryParse(Console.ReadLine(), out int nbrExtraBeds))
+            int[] validNbrExtraBeds = { 0, 1, 2 };
+            int nbrExtraBeds;
+            while (true)
             {
-                Console.WriteLine("Inte giltigt antal extra sängar, du behöver välja 0, 1 eller 2");
-                return;
-            }
+                Console.WriteLine("Ange antal extra sängar: (0/1/2) ");
+                Console.WriteLine("OBS! Singelrum kan inte ha några extrasängar, dubbelrum 30 kvm max 1 extrasäng, dubbelrum 40 kvm max 2 ");
+                if (int.TryParse(Console.ReadLine(), out nbrExtraBeds) && validNbrExtraBeds.Contains(nbrExtraBeds))
+                {
+                    var validNbrExtraBedPerRoomSize = new[]
+                    {
+                        new { RoomSize = 20, MaxExtraBeds = 0 },
+                        new { RoomSize = 30, MaxExtraBeds = 1 },
+                        new { RoomSize = 40, MaxExtraBeds = 2 }
+                    };
 
-            if (nbrExtraBeds < 2)
-            {
-                Console.WriteLine("För många extrasängar");
-            }
+                    var validNbrExtraBed = validNbrExtraBedPerRoomSize.FirstOrDefault(r => r.RoomSize == roomSize)?.MaxExtraBeds;
 
-            if (roomSize == 20 && nbrExtraBeds > 0)
-            {
-                Console.WriteLine("Ett rum på 20 kvm kan inte ha några extrasängar.");
-                return;
-            }
+                    if (nbrExtraBeds > validNbrExtraBed)
+                    {
+                        Console.WriteLine($"För många extrasängar, {roomSize} kan max ha {validNbrExtraBed} extrasängar");
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
 
-            if (roomSize == 30 && nbrExtraBeds > 1)
-            {
-                Console.WriteLine("Ett rum på 30 kvm kan max ha 1 extrasäng");
-                return;
-            }
-
-            else if (roomSize == 40 && nbrExtraBeds > 2)
-            {
-                Console.WriteLine("Ett rum på 40 kvm kan ha max 2 extrasängar");
-                return;
+                else
+                {
+                    Console.WriteLine("Inte giltigt antal extra sängar, du behöver välja 0, 1 eller 2");
+                }
             }
 
             var room = new HotelRooms
@@ -128,110 +151,141 @@ namespace HotellMenu.Controllers
         {
             Console.Clear();
             ShowAllRooms();
-            Console.WriteLine("Ange rumsID på rummet du vill redigera: ");
 
-            if (!int.TryParse(Console.ReadLine(), out int roomId))
+            int hotelRoomId;
+            HotelRooms room = null;
+            while (true)
             {
-                Console.WriteLine("Inte ett giltigt rumsID");
-                return;
-            }
+                Console.WriteLine("Ange rumsID på rummet du vill redigera: ");
 
-            var room = _roomService.ShowHotelRoomById(roomId);
-
-            if (room == null)
-            {
-                Console.WriteLine("Rummet finns inte");
-                return;
-            }
-
-            Console.WriteLine("Ange nytt rumsnummer: ");
-            if (!int.TryParse(Console.ReadLine(), out int newRoomNumber))
-            {
-                Console.WriteLine("Inte ett giltigt rumsnummer");
-                return;
-            }
-            room.RoomNumber = newRoomNumber;
-
-            Console.WriteLine("Ange om rummet är dubbelrum (true/false): ");
-            if (!bool.TryParse(Console.ReadLine(), out bool isDouble))
-            {
-                Console.WriteLine("Inte en giltig inmatning, ange true eller false");
-                return;
-            }
-            room.IsDouble = isDouble;
-
-            Console.WriteLine("Ange om rummet är ledigt (true/false): ");
-            if (!bool.TryParse(Console.ReadLine(), out bool isAvaliable))
-            {
-                Console.WriteLine("Inte en giltig inmatning, ange true eller false");
-                return;
-            }
-            room.RoomAvaliability = isAvaliable;
-
-            Console.WriteLine("Ange storlek på rummet: (20/30/40) kvm ");
-            if (!int.TryParse(Console.ReadLine(), out int roomSize) || (roomSize != 20 && roomSize != 30 && roomSize != 40))
-            {
-                Console.WriteLine("Inte giltig storlek. Vänligen ange 20, 30 eller 40 kvm.");
-                return;
-            }
-
-            if (room.IsDouble)
-            {
-                if (roomSize == 30 || roomSize == 40)
+                if (int.TryParse(Console.ReadLine(), out hotelRoomId))
                 {
-                    room.RoomSize = roomSize;
+                    room = _roomService.ShowHotelRoomById(hotelRoomId);
+
+                    if (room != null)
+                    {
+                        break;
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("Ett dubbelrum kan endast vara 30 eller 40 kvm");
-                    return;
-                }
-            }
-
-            else
-            {
-                if (roomSize != 20)
-                {
-                    Console.WriteLine("Ett singelrum kan endast vara 20 kvm.");
-                    return;
+                    Console.WriteLine("Inte ett giltigt rumsID eller så finns inte rummet. Försök igen");
                 }
 
-                room.RoomSize = roomSize;
+                Console.WriteLine("Du redigerar nu: " + room.HotelRoomsId);
             }
-
-
             
-            Console.WriteLine("Ange antal extra sängar: (0/1/2) ");
-            if (!int.TryParse(Console.ReadLine(), out int nbrExtraBeds))
+            int newRoomNumber;
+            while (true)
             {
-                Console.WriteLine("Inte giltigt antal extra sängar, du behöver välja 0, 1 eller 2");
-                return;
+                Console.WriteLine("Ange nytt rumsnummer: ");
+                if (int.TryParse(Console.ReadLine(), out newRoomNumber) && !_roomService.IsRoomNumberTaken(newRoomNumber))
+                {
+                    room.RoomNumber = newRoomNumber;
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Inte ett giltigt rumsnummer eller så är rumsnumret redan upptaget. Försök igen");
+                }
             }
 
-            if (nbrExtraBeds < 2)
+            bool isDouble;
+            while (true)
             {
-                Console.WriteLine("För många extrasängar");
+                Console.WriteLine("Ange om rummet är dubbelrum (true/false): ");
+                if (bool.TryParse(Console.ReadLine(), out isDouble))
+                {
+                    room.IsDouble = isDouble;
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Inte en giltig inmatning, ange true eller false");
+                }
             }
 
-            if (room.RoomSize == 20 && nbrExtraBeds > 0)
+            bool isAvaliable;
+            while (true)
             {
-                    Console.WriteLine("Ett rum på 20 kvm kan inte ha några extrasängar.");
-                    return;
+                Console.WriteLine("Ange om rummet är ledigt (true/false): ");
+                if (bool.TryParse(Console.ReadLine(), out isAvaliable))
+                {
+                    room.RoomAvaliability = isAvaliable;
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Inte en giltig inmatning, ange true eller false");
+                }
             }
 
-            if (room.RoomSize == 30 && nbrExtraBeds > 1)
+            int roomSize;
+            int[] validRoomSizes = { 20, 30, 40 };
+            while (true)
             {
-                    Console.WriteLine("Ett rum på 30 kvm kan max ha 1 extrasäng");
-                    return;
+                Console.WriteLine("Ange storlek på rummet: (20/30/40) kvm ");
+                if (int.TryParse(Console.ReadLine(), out roomSize) && validRoomSizes.Contains(roomSize))
+                {
+                    var validRoomSize = isDouble ? new int[] { 30, 40 }.Contains(roomSize) : roomSize == 20;
+                    if (!validRoomSize)
+                    {
+                        if (isDouble)
+                        {
+                            Console.WriteLine("Ett dubbelrum kan endast vara 30 eller 40 kvm");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Ett singelrum kan endast vara 20 kvm.");
+                        }
+                    }
+                    else
+                    {
+                        room.RoomSize = roomSize;
+                        break;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Inte giltig storlek. Vänligen ange 20, 30 eller 40 (kvm) enbart i siffor.");
+                }
             }
 
-            else if (room.RoomSize == 40 && nbrExtraBeds > 2)
+            int nbrExtraBeds;
+            int[] validNbrExtraBeds = { 0, 1, 2 };
+            while (true)
             {
-                    Console.WriteLine("Ett rum på 40 kvm kan ha max 2 extrasängar");
-                    return;
-            }
+                Console.WriteLine("Ange antal extra sängar: (0/1/2) ");
+                Console.WriteLine("OBS! Singelrum kan inte ha några extrasängar, dubbelrum 30 kvm max 1 extrasäng, dubbelrum 40 kvm max 2 ");
+                if (int.TryParse(Console.ReadLine(), out nbrExtraBeds) && validNbrExtraBeds.Contains(nbrExtraBeds))
+                {
+                    var validNbrExtraBedPerRoomSize = new[]
+                    {
+                        new { RoomSize = 20, MaxExtraBeds = 0 },
+                        new { RoomSize = 30, MaxExtraBeds = 1 },
+                        new { RoomSize = 40, MaxExtraBeds = 2 }
+                    };
 
-            room.NbrExtraBeds = nbrExtraBeds;
+
+                    var validNbrExtraBed = validNbrExtraBedPerRoomSize.FirstOrDefault(r => r.RoomSize == roomSize)?.MaxExtraBeds;
+
+                    if (nbrExtraBeds > validNbrExtraBed)
+                    {
+                        Console.WriteLine($"För många extrasängar, {roomSize} kan max ha {validNbrExtraBed} extrasängar");
+                    }
+                    else
+                    {
+                        room.NbrExtraBeds = nbrExtraBeds;
+                        break;
+                    }
+                }
+
+                else
+                {
+                    Console.WriteLine("Inte giltigt antal extra sängar, du behöver välja 0, 1 eller 2");
+
+                }
+            }
 
             _roomService.UpdateHotelRoom(room);
             Console.WriteLine("Rummet har uppdaterats!");
