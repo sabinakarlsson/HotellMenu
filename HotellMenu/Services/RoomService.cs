@@ -51,5 +51,10 @@ namespace HotellMenu.Services
             return _dbContext.HotelRooms.FirstOrDefault(r => r.HotelRoomsId == hotelRoomId);
         }
 
+        public bool IsRoomNumberTaken(int roomNumber)
+        {
+            return _dbContext.HotelRooms.Any(r => r.RoomNumber == roomNumber);
+        }
+
     }
 }

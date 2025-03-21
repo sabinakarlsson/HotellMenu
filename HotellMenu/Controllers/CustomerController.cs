@@ -19,6 +19,7 @@ namespace HotellMenu.Controllers
 
         public void AddCustomer()
         {
+            Console.Clear();
             Console.WriteLine("Ange kundens namn:");
             string customerName = Console.ReadLine();
             Console.WriteLine("Ange kundens email:");
@@ -33,6 +34,7 @@ namespace HotellMenu.Controllers
 
         public void EditCustomer()
         {
+            Console.Clear();
             Console.WriteLine("Ange kundens id:");
             int customerId = int.Parse(Console.ReadLine());
             var customer = _customerService.ShowCustomerById(customerId);
@@ -61,22 +63,29 @@ namespace HotellMenu.Controllers
 
         public void ShowAllCustomers()
         {
+            Console.Clear();
             var customers = _customerService.ShowAllCustomers();
             foreach (var customer in customers)
             {
                 Console.WriteLine($"Kundens ID: {customer.CustomersId}, Kundens namn: {customer.CustomerName}, Email: {customer.Email}");
             }
-            Console.ReadKey();
         }
 
         public void DeleteCustomer()
         {
-            Console.WriteLine("Ange kundens id:");
+            Console.Clear();
+            ShowAllCustomers();
+            Console.WriteLine("\n========================");
+
+            Console.Write("Ange id på kunden du vill radera:");
+
             int customerId = int.Parse(Console.ReadLine());
+
+
+
             _customerService.DeleteCustomer(customerId);
 
-            Console.WriteLine("\n========================\n");
-            ShowAllCustomers();
+
         }
     }
 }
