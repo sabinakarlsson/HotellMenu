@@ -56,6 +56,16 @@ namespace HotellMenu.Services
             return _dbContext.HotelRooms.Any(r => r.RoomNumber == roomNumber);
         }
 
+        public bool IsRoomAvailable(int roomNumber)
+        {
+            return _dbContext.HotelRooms.Any(r => r.RoomNumber == roomNumber && r.RoomAvaliability == true);
+        }
+
+        public List<HotelRooms> AllAvaliableRooms()
+        {
+            return _dbContext.HotelRooms.Where(r => r.RoomAvaliability == true).ToList();
+        }
+
 
 
     }

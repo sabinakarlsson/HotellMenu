@@ -11,10 +11,9 @@ namespace HotellMenu.Entities
     {
         public int BookingsId { get; set; }
 
-
         public DateTime CheckInDate { get; set; }
 
-        public DateTime CheckOutDate { get; set; }
+        public DateTime TotalStay { get; set; }
 
         public int NbrOfGuests { get; set; }
 

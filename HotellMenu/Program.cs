@@ -16,10 +16,6 @@ namespace HotellMenu
                 DataInitializer.InitializeData(dbContext);
                 var menu = new Menu(dbContext);
                 menu.Start();
-
-
-
-
             }
         }
     }

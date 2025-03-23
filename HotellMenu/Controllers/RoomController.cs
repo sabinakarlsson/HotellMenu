@@ -144,7 +144,7 @@ namespace HotellMenu.Controllers
             _roomService.AddHotelRoom(room);
 
 
-            Console.WriteLine("Rummet har registrerats!");
+            Console.WriteLine("Rummet har registrerats. Klicka enter för att gå vidare");
             Console.ReadLine();
         }
 
@@ -180,15 +180,28 @@ namespace HotellMenu.Controllers
             int newRoomNumber;
             while (true)
             {
-                Console.WriteLine("Ange nytt rumsnummer: ");
-                if (int.TryParse(Console.ReadLine(), out newRoomNumber) && !_roomService.IsRoomNumberTaken(newRoomNumber))
+                Console.WriteLine("Ange nytt rumsnummer (du kan även välja att behålla det gamla, skriv då samma rumsnummer som tidigare) : ");
+                if (int.TryParse(Console.ReadLine(), out newRoomNumber))
                 {
-                    room.RoomNumber = newRoomNumber;
-                    break;
+                    if (newRoomNumber == room.RoomNumber)
+                    {
+                        Console.WriteLine("Du har valt att behålla det gamla rumsnumret.");
+                        break;
+                    }
+                    if (!_roomService.IsRoomNumberTaken(newRoomNumber))
+                    {
+                        room.RoomNumber = newRoomNumber;
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Det nya rumsnumret är redan upptaget. Försök igen");
+                    }
+                        
                 }
                 else
                 {
-                    Console.WriteLine("Inte ett giltigt rumsnummer eller så är rumsnumret redan upptaget. Försök igen");
+                    Console.WriteLine("Inte ett giltigt rumsnummer. Försök igen");
                 }
             }
 
@@ -290,7 +303,7 @@ namespace HotellMenu.Controllers
             }
 
             _roomService.UpdateHotelRoom(room);
-            Console.WriteLine("Rummet har uppdaterats!");
+            Console.WriteLine("Rummet har uppdaterats. Klicka enter för att gå vidare");
             Console.ReadKey();
         }
 
@@ -304,6 +317,21 @@ namespace HotellMenu.Controllers
             }
         }
 
+        public void ShowAllAvaliableRoomsWithGuestNbr(int nbrOfGuests)
+        {
+            Console.Clear();
+            var rooms = _roomService.ShowAllHotelRoom().Where(r => r.RoomAvaliability == true)
+            .Where(r => nbrOfGuests == 4 ? r.IsDouble && r.RoomSize == 40 && r.NbrExtraBeds == 2 :
+                        nbrOfGuests == 3 ? r.IsDouble && r.RoomSize == 30 && r.NbrExtraBeds == 1 :
+                        nbrOfGuests == 2 || nbrOfGuests == 1
+            );
+
+            foreach (var room in rooms)
+            {
+                Console.WriteLine($"RumsID: {room.HotelRoomsId}, Rumsnummer: {room.RoomNumber}, Dubbelrum: {room.IsDouble}, Ledigt: {room.RoomAvaliability}, Storlek: {room.RoomSize}, Antal extra sängar: {room.NbrExtraBeds}");
+            }
+        }
+
         public void DeleteRoom()
         {
             Console.Clear();
@@ -311,10 +339,8 @@ namespace HotellMenu.Controllers
             Console.WriteLine("Ange rumsId på rummet du vill radera: ");
             int roomId = int.Parse(Console.ReadLine());
             _roomService.DeleteHotelRoom(roomId);
-            Console.WriteLine("Rummet har raderats!");
+            Console.WriteLine("Rummet har raderats. Klicka enter för att gå vidare");
             Console.ReadLine();
-
-
 
         }
     }

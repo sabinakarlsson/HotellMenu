@@ -13,7 +13,7 @@ namespace HotellMenu.Entities
 
         public int RoomNumber { get; set; }
 
-        public bool IsDouble { get; set; } //enkel eller dubbel
+        public bool IsDouble { get; set; }
 
         public bool RoomAvaliability { get; set; }
 
@@ -22,12 +22,6 @@ namespace HotellMenu.Entities
         public int NbrExtraBeds { get; set; }
 
         public List<Bookings> Bookings { get; set; } = null!;
-
-
-
-
-        //public int RoomPrice { get; set; }
-
 
     }
 }

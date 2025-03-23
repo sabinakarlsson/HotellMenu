@@ -25,6 +25,10 @@ namespace HotellMenu.Menus
             bool isRunning = true;
             while (isRunning)
             {
+
+                var bookingController = new BookingController(new BookingService(_dbContext));
+
+
                 Console.Clear();
                 Console.WriteLine("1. Lägg till bokning");
                 Console.WriteLine("2. Redigera bokning");
@@ -33,12 +37,10 @@ namespace HotellMenu.Menus
                 Console.WriteLine("5. Exit");
                 ConsoleKeyInfo key = Console.ReadKey();
 
-                var BookingController = new BookingController(new BookingService(_dbContext));
-
                 switch (key.KeyChar)
                 {
                     case '1':
-                        //
+                        bookingController.AddBooking(_dbContext);
                         break;
                     case '2':
                         //

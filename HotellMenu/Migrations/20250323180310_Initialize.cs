@@ -49,7 +49,7 @@ namespace HotellMenu.Migrations
                     BookingsId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CheckInDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CheckOutDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TotalStay = table.Column<DateTime>(type: "datetime2", nullable: false),
                     NbrOfGuests = table.Column<int>(type: "int", nullable: false),
                     CustomersId = table.Column<int>(type: "int", nullable: false),
                     HotelRoomsId = table.Column<int>(type: "int", nullable: false)

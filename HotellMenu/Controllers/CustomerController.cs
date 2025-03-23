@@ -30,6 +30,9 @@ namespace HotellMenu.Controllers
                 CustomerName = customerName,
                 Email = email
             });
+
+            Console.WriteLine("Kunden är nu tillagd. Klicka enter för att gå vidare");
+            Console.ReadLine();
         }
 
 
@@ -56,7 +59,8 @@ namespace HotellMenu.Controllers
                         customer.Email = Console.ReadLine();
 
                         _customerService.EditCustomer(customer);
-                        Console.WriteLine("Kundens information är uppdaterad.");
+                        Console.WriteLine("Kundens information är uppdaterad. Klicka enter för att gå vidare");
+                        Console.ReadLine();
                         break;
                     }
                     else
@@ -95,8 +99,11 @@ namespace HotellMenu.Controllers
 
 
             _customerService.DeleteCustomer(customerId);
-
+            Console.WriteLine("Kunden är nu raderad. Klicka enter för att gå vidare");
+            Console.ReadLine();
 
         }
+
+        
     }
 }

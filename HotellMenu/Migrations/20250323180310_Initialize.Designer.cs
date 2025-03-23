@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HotellMenu.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250319115113_Initialize")]
+    [Migration("20250323180310_Initialize")]
     partial class Initialize
     {
         /// <inheritdoc />
@@ -36,9 +36,6 @@ namespace HotellMenu.Migrations
                     b.Property<DateTime>("CheckInDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("CheckOutDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("CustomersId")
                         .HasColumnType("int");
 
@@ -47,6 +44,9 @@ namespace HotellMenu.Migrations
 
                     b.Property<int>("NbrOfGuests")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("TotalStay")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("BookingsId");
 
