@@ -80,15 +80,62 @@ namespace HotellMenu.Controllers
 
         public (DateTime checkInDate, DateTime totalStay, int nbrOfGuests) BookingInfo()
         {
-            Console.WriteLine("Ange incheckningsdatum:");
-            DateTime checkInDate = DateTime.Parse(Console.ReadLine());
+            bool isRunning = true;
+            DateTime checkInDate = DateTime.MinValue;
 
-            Console.WriteLine("Hur många nätter vill du övernatta? :");
-            int chosenDays = int.Parse(Console.ReadLine());
+            while (isRunning)
+            {
+                Console.WriteLine("Ange incheckningsdatum (i formatet dd/MM/yyyy) :");
+                bool IsDateValid = DateTime.TryParse(Console.ReadLine(), out checkInDate);
+                if(!IsDateValid)
+                {
+                    Console.WriteLine("Felaktigt datum, vänligen försök igen");
+                }
+                if (checkInDate < DateTime.Today)
+                {
+                    Console.WriteLine("Du kan inte ange ett datum som har passerat, vänligen välj ett annat datum för checkin");
+                }
+                else
+                {
+                    isRunning = false;
+                }
+            }
+
+            Console.WriteLine("Hur många nätter vill du övernatta?");
+            int chosenDays;
+            while (!int.TryParse(Console.ReadLine(), out chosenDays) || chosenDays <= 0)
+            {
+                Console.WriteLine("Ogiltigt antal nätter, vänligen ange ett positivt heltal.");
+            }
             DateTime totalStay = checkInDate.AddDays(chosenDays);
 
-            Console.WriteLine("Ange antal gäster: ");
-            int nbrOfGuests = int.Parse(Console.ReadLine());
+            bool isRunning2 = true;
+            int nbrOfGuests = 0;
+            while (isRunning2)
+            {
+                Console.WriteLine("Ange antal gäster: ");
+                if (int.TryParse(Console.ReadLine(), out nbrOfGuests))
+                {
+                    if (nbrOfGuests > 4)
+                    {
+                        Console.WriteLine("Vi kan enbart ta emot bokningar med max 4 gäster, vänligen boka vid två separata bokningar.");
+                    }
+                    else if (nbrOfGuests < 1)
+                    {
+                        Console.WriteLine("Du måste ange minst en gäst för att kunna boka.");
+                    }
+                    else
+                    {
+                        isRunning2 = false;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Felaktig inmatning, vänligen försök igen.");
+                }
+
+
+            }
 
             return (checkInDate, totalStay, nbrOfGuests);
         }

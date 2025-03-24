@@ -18,23 +18,18 @@ namespace HotellMenu.Menus
             _dbContext = dbContext;
         }
 
-
+        
         public void Start()
         {
+            var bookingController = new BookingController(new BookingService(_dbContext));
+
             Console.WriteLine("Välkommen till bokningsmenyn!");
             bool isRunning = true;
             while (isRunning)
             {
-
-                var bookingController = new BookingController(new BookingService(_dbContext));
-
-
                 Console.Clear();
                 Console.WriteLine("1. Lägg till bokning");
-                Console.WriteLine("2. Redigera bokning");
-                Console.WriteLine("3. Visa bokning(ar)");
-                Console.WriteLine("4. Radera bokning");
-                Console.WriteLine("5. Exit");
+                Console.WriteLine("2. Exit");
                 ConsoleKeyInfo key = Console.ReadKey();
 
                 switch (key.KeyChar)
@@ -43,19 +38,11 @@ namespace HotellMenu.Menus
                         bookingController.AddBooking(_dbContext);
                         break;
                     case '2':
-                        //
-                        break;
-                    case '3':
-                        //
-                        break;
-                    case '4':
-                        //
-                        break;
-                    case '5':
-                        //
+                        isRunning = false;
                         break;
                     default:
-                        Console.WriteLine("Välj bland menyvalen 1-5");
+                        Console.WriteLine("Välj bland menyvalen 1-2. Tryck på en tangent för att fortsätta");
+                        Console.ReadKey();
                         break;
 
                 }
