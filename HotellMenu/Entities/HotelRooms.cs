@@ -15,7 +15,7 @@ namespace HotellMenu.Entities
 
         public bool IsDouble { get; set; }
 
-        public bool RoomAvaliability { get; set; }
+        public bool RoomAvailability { get; set; }
 
         public int RoomSize { get; set; }
 

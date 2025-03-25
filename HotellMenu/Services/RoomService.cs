@@ -46,7 +46,7 @@ namespace HotellMenu.Services
         }
 
 
-        public HotelRooms ShowHotelRoomById(int hotelRoomId)
+        public HotelRooms GetHotelRoomById(int hotelRoomId)
         {
             return _dbContext.HotelRooms.FirstOrDefault(r => r.HotelRoomsId == hotelRoomId);
         }
@@ -58,12 +58,12 @@ namespace HotellMenu.Services
 
         public bool IsRoomAvailable(int roomNumber)
         {
-            return _dbContext.HotelRooms.Any(r => r.RoomNumber == roomNumber && r.RoomAvaliability == true);
+            return _dbContext.HotelRooms.Any(r => r.RoomNumber == roomNumber && r.RoomAvailability == true);
         }
 
-        public List<HotelRooms> AllAvaliableRooms()
+        public List<HotelRooms> AllAvailableRooms()
         {
-            return _dbContext.HotelRooms.Where(r => r.RoomAvaliability == true).ToList();
+            return _dbContext.HotelRooms.Where(r => r.RoomAvailability == true).ToList();
         }
 
 

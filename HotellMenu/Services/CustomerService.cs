@@ -46,7 +46,7 @@ namespace HotellMenu.Services
         }
 
 
-        public Customers ShowCustomerById(int customerId)
+        public Customers GetCustomerById(int customerId)
         {
             return _dbContext.Customers.FirstOrDefault(r => r.CustomersId == customerId);
         }

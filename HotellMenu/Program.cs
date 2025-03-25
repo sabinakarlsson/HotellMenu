@@ -12,7 +12,6 @@ namespace HotellMenu
         {
             using (var dbContext = DataInitializer.Run())
             {
-                //använd denna för att skapa nya hotellrum och kunder
                 DataInitializer.InitializeData(dbContext);
                 var menu = new Menu(dbContext);
                 menu.Start();

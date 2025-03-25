@@ -48,7 +48,7 @@ namespace HotellMenu.Controllers
                 Console.WriteLine("Ange Id på kunden du vill redigera:");
                 if (int.TryParse(Console.ReadLine(), out customerId))
                 {
-                    customer = _customerService.ShowCustomerById(customerId);
+                    customer = _customerService.GetCustomerById(customerId);
                     if (customer != null)
                     {
                         Console.WriteLine("Du redigerar nu kund med kundId: " + customer.CustomersId);

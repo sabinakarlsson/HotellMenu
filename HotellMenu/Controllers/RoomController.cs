@@ -52,11 +52,11 @@ namespace HotellMenu.Controllers
                 }
             }
 
-            bool isAvaliable;
+            bool isAvailable;
             while (true)
             {
                 Console.WriteLine("Ange om rummet är ledigt (true/false): ");
-                if (bool.TryParse(Console.ReadLine(), out isAvaliable))
+                if (bool.TryParse(Console.ReadLine(), out isAvailable))
                 {
                     break;
                 }
@@ -137,7 +137,7 @@ namespace HotellMenu.Controllers
             {
                 RoomNumber = roomNumber,
                 IsDouble = isDouble,
-                RoomAvaliability = isAvaliable,
+                RoomAvailability = isAvailable,
                 RoomSize = roomSize,
                 NbrExtraBeds = nbrExtraBeds
             };
@@ -162,7 +162,7 @@ namespace HotellMenu.Controllers
 
                 if (int.TryParse(Console.ReadLine(), out hotelRoomId))
                 {
-                    room = _roomService.ShowHotelRoomById(hotelRoomId);
+                    room = _roomService.GetHotelRoomById(hotelRoomId);
 
                     if (room != null)
                     {
@@ -220,13 +220,13 @@ namespace HotellMenu.Controllers
                 }
             }
 
-            bool isAvaliable;
+            bool isAvailable;
             while (true)
             {
                 Console.WriteLine("Ange om rummet är ledigt (true/false): ");
-                if (bool.TryParse(Console.ReadLine(), out isAvaliable))
+                if (bool.TryParse(Console.ReadLine(), out isAvailable))
                 {
-                    room.RoomAvaliability = isAvaliable;
+                    room.RoomAvailability = isAvailable;
                     break;
                 }
                 else
@@ -313,14 +313,14 @@ namespace HotellMenu.Controllers
             var rooms = _roomService.ShowAllHotelRoom();
             foreach (var room in rooms)
             {
-                Console.WriteLine($"RumsID: {room.HotelRoomsId}, Rumsnummer: {room.RoomNumber}, Dubbelrum: {room.IsDouble}, Ledigt: {room.RoomAvaliability}, Storlek: {room.RoomSize}, Antal extra sängar: {room.NbrExtraBeds}");
+                Console.WriteLine($"RumsID: {room.HotelRoomsId}, Rumsnummer: {room.RoomNumber}, Dubbelrum: {room.IsDouble}, Ledigt: {room.RoomAvailability}, Storlek: {room.RoomSize}, Antal extra sängar: {room.NbrExtraBeds}");
             }
         }
 
-        public void ShowAllAvaliableRoomsWithGuestNbr(int nbrOfGuests)
+        public void ShowAllAvailableRoomsWithGuestNbr(int nbrOfGuests)
         {
             Console.Clear();
-            var rooms = _roomService.ShowAllHotelRoom().Where(r => r.RoomAvaliability == true)
+            var rooms = _roomService.ShowAllHotelRoom().Where(r => r.RoomAvailability == true)
             .Where(r => nbrOfGuests == 4 ? r.IsDouble && r.RoomSize == 40 && r.NbrExtraBeds == 2 :
                         nbrOfGuests == 3 ? r.IsDouble && r.RoomSize == 30 && r.NbrExtraBeds == 1 :
                         nbrOfGuests == 2 || nbrOfGuests == 1
@@ -328,7 +328,7 @@ namespace HotellMenu.Controllers
 
             foreach (var room in rooms)
             {
-                Console.WriteLine($"RumsID: {room.HotelRoomsId}, Rumsnummer: {room.RoomNumber}, Dubbelrum: {room.IsDouble}, Ledigt: {room.RoomAvaliability}, Storlek: {room.RoomSize}, Antal extra sängar: {room.NbrExtraBeds}");
+                Console.WriteLine($"RumsID: {room.HotelRoomsId}, Rumsnummer: {room.RoomNumber}, Dubbelrum: {room.IsDouble}, Ledigt: {room.RoomAvailability}, Storlek: {room.RoomSize}, Antal extra sängar: {room.NbrExtraBeds}");
             }
         }
 

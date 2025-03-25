@@ -63,7 +63,7 @@ namespace HotellMenu.Contexts
             {
                 RoomNumber = 101,
                 IsDouble = false,
-                RoomAvaliability = true,
+                RoomAvailability = true,
                 RoomSize = 20,
                 NbrExtraBeds = 0
             });
@@ -72,7 +72,7 @@ namespace HotellMenu.Contexts
             {
                 RoomNumber = 102,
                 IsDouble = true,
-                RoomAvaliability = true,
+                RoomAvailability = true,
                 RoomSize = 30,
                 NbrExtraBeds = 1
             });
@@ -81,7 +81,7 @@ namespace HotellMenu.Contexts
             {
                 RoomNumber = 201,
                 IsDouble = true,
-                RoomAvaliability = true,
+                RoomAvailability = true,
                 RoomSize = 40,
                 NbrExtraBeds = 2
             });
@@ -90,7 +90,7 @@ namespace HotellMenu.Contexts
             {
                 RoomNumber = 202,
                 IsDouble = false,
-                RoomAvaliability = true,
+                RoomAvailability = true,
                 RoomSize = 20,
                 NbrExtraBeds = 0
             });

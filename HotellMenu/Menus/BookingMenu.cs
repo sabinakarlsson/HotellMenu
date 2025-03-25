@@ -21,15 +21,20 @@ namespace HotellMenu.Menus
         
         public void Start()
         {
-            var bookingController = new BookingController(new BookingService(_dbContext));
-
+            var roomService = new RoomService(_dbContext);
+            var roomController = new RoomController(roomService);
+            var customerService = new CustomerService(_dbContext);
+            var customerController = new CustomerController(customerService);
+            var bookingController = new BookingController(new BookingService(_dbContext), roomController, roomService, customerController, customerService);
+            
             Console.WriteLine("Välkommen till bokningsmenyn!");
             bool isRunning = true;
             while (isRunning)
             {
                 Console.Clear();
                 Console.WriteLine("1. Lägg till bokning");
-                Console.WriteLine("2. Exit");
+                Console.WriteLine("2. Visa bokningar");
+                Console.WriteLine("3. Exit");
                 ConsoleKeyInfo key = Console.ReadKey();
 
                 switch (key.KeyChar)
@@ -38,6 +43,11 @@ namespace HotellMenu.Menus
                         bookingController.AddBooking(_dbContext);
                         break;
                     case '2':
+                        bookingController.ShowAllBookings();
+                        Console.WriteLine("Klicka enter för att gå vidare");
+                        Console.ReadKey();
+                        break;
+                    case '3':
                         isRunning = false;
                         break;
                     default:

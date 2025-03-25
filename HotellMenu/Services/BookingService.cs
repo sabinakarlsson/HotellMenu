@@ -1,5 +1,6 @@
 ﻿using HotellMenu.Contexts;
 using HotellMenu.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,10 @@ namespace HotellMenu.Services
 
         }
 
+        public bool IsRoomAvailable(int roomId, DateTime checkInDate, DateTime totalStay)
+        {
+            return !_dbContext.Bookings.Any(b => b.HotelRooms.HotelRoomsId == roomId && b.CheckInDate < totalStay && checkInDate < b.TotalStay);
+        }
 
         public void AddBooking(Bookings booking)
         {
@@ -25,20 +30,9 @@ namespace HotellMenu.Services
             _dbContext.SaveChanges();
         }
 
-        public void UpdateBooking(Bookings booking)
+        public List<Bookings> ShowAllTheBookings()
         {
-            _dbContext.Bookings.Update(booking);
-            _dbContext.SaveChanges();
-        }
-
-        public void DeleteBooking(int bookingId)
-        {
-            var booking = _dbContext.Bookings.FirstOrDefault(c => c.BookingsId == bookingId);
-            if (booking != null)
-            {
-                _dbContext.Bookings.Remove(booking);
-                _dbContext.SaveChanges();
-            }
+            return _dbContext.Bookings.Include(h=>h.HotelRooms).Include(c=>c.Customers).ToList();
         }
 
         public List<Bookings> ShowAllBookings()
